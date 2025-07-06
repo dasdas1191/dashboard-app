@@ -282,16 +282,11 @@ export function TimeoutTimingEdit(props: TimingEditProps) {
 			justifyContent="center"
 			alignItems="center"
 		>
-			<LocalizationProvider dateAdapter={AdapterDateFns} locale={datePickerLocal}>
+			<LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={datePickerLocal}>
 				<DesktopDateTimePicker
-					cancelText={t('global.cancel')}
-					okText={t('global.apply')}
-					clearText={t('dashboard.timings.clear-time')}
-					todayText={t('dashboard.timings.today')}
-					toolbarTitle={t('dashboard.timings.select.date.and.timed')}
 					disabled={props.disabled}
 					value={value}
-					onChange={(newValue: Date) => {
+					onChange={(newValue: Date | null) => {
 						if (!newValue) {
 							return;
 						}
