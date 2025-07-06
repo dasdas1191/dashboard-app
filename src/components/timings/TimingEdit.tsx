@@ -208,8 +208,6 @@ export function DailyTimeTriggerEdit(props: TimingEditProps) {
 }
 
 export function OnceTimingEdit(props: TimingEditProps) {
-	const { t } = useTranslation();
-
 	const [time, setTime] = useState<Date>(new Date());
 
 	useEffect(() => {
