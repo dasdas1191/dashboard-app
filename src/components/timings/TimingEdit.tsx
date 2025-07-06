@@ -172,7 +172,11 @@ export function DailyTimeTriggerEdit(props: TimingEditProps) {
 			{/* Use french time, since they use 24 hours clock */}
 			<LocalizationProvider dateAdapter={AdapterDateFns} locale={datePickerLocal}>
 				<DesktopTimePicker
-					label={t('dashboard.timings.select.time')}
+					cancelText={t('global.cancel')}
+					okText={t('global.apply')}
+					clearText={t('dashboard.timings.clear-time')}
+					todayText={t('dashboard.timings.today')}
+					toolbarTitle={t('dashboard.timings.select.time')}
 					disabled={props.disabled}
 					value={time}
 					onChange={(newTime: Date | null) => {
@@ -182,11 +186,7 @@ export function DailyTimeTriggerEdit(props: TimingEditProps) {
 						setTime(newTime);
 						sendTimingProperties(newTime?.getHours() || 0, newTime?.getMinutes() || 0, days);
 					}}
-					slotProps={{
-						textField: {
-							variant: "outlined"
-						}
-					}}
+					renderInput={(params: any) => <TextField {...params} />}
 				/>
 			</LocalizationProvider>
 		</Grid>
@@ -240,7 +240,11 @@ export function OnceTimingEdit(props: TimingEditProps) {
 		{/* Use french time, since they use 24 hours clock */}
 		<LocalizationProvider dateAdapter={AdapterDateFns} locale={datePickerLocal}>
 			<DesktopDateTimePicker
-				label={t('dashboard.timings.select.date.and.time')}
+				cancelText={t('global.cancel')}
+				okText={t('global.apply')}
+				clearText={t('dashboard.timings.clear-time')}
+				todayText={t('dashboard.timings.today')}
+				toolbarTitle={t('dashboard.timings.select.date.and.time')}
 				disabled={props.disabled}
 				value={time}
 				onChange={(newValue: Date | null) => {
@@ -250,11 +254,7 @@ export function OnceTimingEdit(props: TimingEditProps) {
 					setTime(newValue);
 					sendTimingProperties(newValue);
 				}}
-				slotProps={{
-					textField: {
-						variant: "outlined"
-					}
-				}}
+				renderInput={(params: any) => <TextField {...params} />}
 			/>
 		</LocalizationProvider>
 	</Grid>
@@ -294,21 +294,21 @@ export function TimeoutTimingEdit(props: TimingEditProps) {
 		>
 			<LocalizationProvider dateAdapter={AdapterDateFns} locale={datePickerLocal}>
 				<DesktopDateTimePicker
-					label={t('dashboard.timings.timeout.start.in.label')}
+					cancelText={t('global.cancel')}
+					okText={t('global.apply')}
+					clearText={t('dashboard.timings.clear-time')}
+					todayText={t('dashboard.timings.today')}
+					toolbarTitle={t('dashboard.timings.select.date.and.timed')}
 					disabled={props.disabled}
 					value={value}
-					onChange={(newValue: Date | null) => {
+					onChange={(newValue: Date) => {
 						if (!newValue) {
 							return;
 						}
 						setValue(newValue);
 						sendTimingProperties(newValue, durationInMinutes);
 					}}
-					slotProps={{
-						textField: {
-							variant: "outlined"
-						}
-					}}
+					renderInput={(params: any) => <TextField {...params} label={t('dashboard.timings.timeout.start.in.label')} />}
 				/>
 			</LocalizationProvider>
 		</Grid>
