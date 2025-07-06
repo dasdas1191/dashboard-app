@@ -170,13 +170,8 @@ export function DailyTimeTriggerEdit(props: TimingEditProps) {
 			alignItems="center"
 		>
 			{/* Use french time, since they use 24 hours clock */}
-			<LocalizationProvider dateAdapter={AdapterDateFns} locale={datePickerLocal}>
+			<LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={datePickerLocal}>
 				<DesktopTimePicker
-					cancelText={t('global.cancel')}
-					okText={t('global.apply')}
-					clearText={t('dashboard.timings.clear-time')}
-					todayText={t('dashboard.timings.today')}
-					toolbarTitle={t('dashboard.timings.select.time')}
 					disabled={props.disabled}
 					value={time}
 					onChange={(newTime: Date | null) => {
@@ -238,13 +233,8 @@ export function OnceTimingEdit(props: TimingEditProps) {
 		alignItems="center"
 	>
 		{/* Use french time, since they use 24 hours clock */}
-		<LocalizationProvider dateAdapter={AdapterDateFns} locale={datePickerLocal}>
+		<LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={datePickerLocal}>
 			<DesktopDateTimePicker
-				cancelText={t('global.cancel')}
-				okText={t('global.apply')}
-				clearText={t('dashboard.timings.clear-time')}
-				todayText={t('dashboard.timings.today')}
-				toolbarTitle={t('dashboard.timings.select.date.and.time')}
 				disabled={props.disabled}
 				value={time}
 				onChange={(newValue: Date | null) => {
