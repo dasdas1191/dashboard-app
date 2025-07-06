@@ -21,7 +21,7 @@ jobs:
     - name: Prepare dependencies
       run: |
         npm i -g yarn
-        yarn install --frozen-lockfile
+        yarn install
 
     - name: Bomb Version # Auto Update patch in main branch
       id: bomb_version
