@@ -73,7 +73,11 @@ jobs:
         cordova platform add android
         cordova build android --$BUILD_TYPE --packageType=apk
         mkdir android
-        cp platforms/android/app/build/outputs/apk/$BUILD_TYPE/app-$BUILD_TYPE.apk android/app-$BUILD_TYPE.apk
+        if [[ $BUILD_TYPE == 'release' ]]; then 
+          cp platforms/android/app/build/outputs/apk/$BUILD_TYPE/app-$BUILD_TYPE-unsigned.apk android/app-$BUILD_TYPE.apk
+        else 
+          cp platforms/android/app/build/outputs/apk/$BUILD_TYPE/app-$BUILD_TYPE.apk android/app-$BUILD_TYPE.apk
+        fi
     - uses: actions/upload-artifact@v4
       with:
         name: android
