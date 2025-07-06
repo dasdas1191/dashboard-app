@@ -57,6 +57,8 @@ jobs:
         REACT_APP_MOCK_API_URL: 'https://remote.casanet.casa'
         REACT_APP_V3_URL: 'https://remote.casanet.casa/v3'
         REACT_APP_LIGHTWEIGHT_URL: '/light-app/index.html'
+        REACT_APP_MOCK_MODE: ''
+        REACT_APP_MOCK_MODE_CONST: 'false'
         CASANET_KEY_STORE: '${{ secrets.CASANET_KEY_STORE }}'
         CASANET_KEY_ALIAS: '${{ secrets.CASANET_KEY_ALIAS }}'
         CASANET_KEY_PASSWORD: '${{ secrets.CASANET_KEY_PASSWORD }}'
