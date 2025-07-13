@@ -1,13 +1,18 @@
 import { Fragment, useEffect, useState } from "react";
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { Grid, useTheme, Button, ButtonGroup, Box, Paper } from "@material-ui/core";
+import { 
+	Grid, 
+	useTheme, 
+	Button, 
+	Box,
+	ToggleButton,
+	ToggleButtonGroup,
+	TextField 
+} from "@mui/material";
 import { getModeColor } from "../../logic/common/themeUtils";
 import { useTranslation } from "react-i18next";
 import ModeNightIcon from '@mui/icons-material/ModeNight';
 import WbTwilightIcon from '@mui/icons-material/WbTwilight';
 import { AccessTime, CalendarMonth } from '@mui/icons-material';
-import TextField from "@mui/material/TextField";
 import { daysOptions } from "./TimingOverview";
 import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -53,7 +58,6 @@ interface EnhancedDateTimePickerProps {
 
 function EnhancedDateTimePicker({ value, onChange, disabled = false, label, fontRatio = 16 }: EnhancedDateTimePickerProps) {
 	const [mode, setMode] = useState<DateTimeMode>('date');
-	const theme = useTheme();
 
 	return (
 		<Box sx={{ width: '100%', direction: 'rtl' }}>
@@ -70,7 +74,6 @@ function EnhancedDateTimePicker({ value, onChange, disabled = false, label, font
 									{...params} 
 									label={label || "בחר תאריך"}
 									fullWidth
-									sx={{ direction: 'rtl' }}
 								/>
 							)}
 						/>
@@ -85,7 +88,6 @@ function EnhancedDateTimePicker({ value, onChange, disabled = false, label, font
 									{...params} 
 									label={label || "בחר שעה"}
 									fullWidth
-									sx={{ direction: 'rtl' }}
 								/>
 							)}
 						/>
@@ -104,14 +106,8 @@ function EnhancedDateTimePicker({ value, onChange, disabled = false, label, font
 							sx={{
 								py: 1.5,
 								fontSize: fontRatio * 0.75,
-								fontWeight: mode === 'time' ? 'bold' : 'normal',
-								direction: 'rtl',
 								borderTopRightRadius: 0,
 								borderBottomRightRadius: 0,
-								'& .MuiButton-startIcon': {
-									marginRight: '8px',
-									marginLeft: 0
-								}
 							}}
 						>
 							שעה
@@ -127,15 +123,9 @@ function EnhancedDateTimePicker({ value, onChange, disabled = false, label, font
 							sx={{
 								py: 1.5,
 								fontSize: fontRatio * 0.75,
-								fontWeight: mode === 'date' ? 'bold' : 'normal',
-								direction: 'rtl',
 								borderTopLeftRadius: 0,
 								borderBottomLeftRadius: 0,
 								borderLeft: 'none',
-								'& .MuiButton-startIcon': {
-									marginRight: '8px',
-									marginLeft: 0
-								}
 							}}
 						>
 							תאריך
@@ -172,7 +162,7 @@ export function DailySunTriggerEdit(props: TimingEditProps) {
 		alignItems="center"
 	>
 		<Grid
-			style={{ marginBottom: props.fontRatio }}
+			sx={{ marginBottom: props.fontRatio }}
 			container
 			direction="row"
 			justifyContent="center"
@@ -192,22 +182,22 @@ export function DailySunTriggerEdit(props: TimingEditProps) {
 				}}
 				exclusive
 			>
-				<ToggleButton value={SunTriggerOptions.Sunrise} aria-label={t('global.sunrise')} style={{ color: getModeColor(true, theme) }}>
+				<ToggleButton value={SunTriggerOptions.Sunrise} aria-label={t('global.sunrise')} sx={{ color: getModeColor(true, theme) }}>
 					<ThemeTooltip title={<span>{t('global.sunrise')}</span>}>
 						<WbTwilightIcon />
 					</ThemeTooltip>
 				</ToggleButton>
-				<ToggleButton value={SunTriggerOptions.Sunset} aria-label={t('global.sunset')} style={{ color: getModeColor(true, theme) }}>
+				<ToggleButton value={SunTriggerOptions.Sunset} aria-label={t('global.sunset')} sx={{ color: getModeColor(true, theme) }}>
 					<ThemeTooltip title={<span>{t('global.sunset')}</span>}>
 						<ModeNightIcon />
 					</ThemeTooltip>
 				</ToggleButton>
 			</ToggleButtonGroup>
 			{/* Put some distance between */}
-			<div style={{ width: props.fontRatio * 2 }}></div>
+			<Box sx={{ width: props.fontRatio * 2 }}></Box>
 			<TextField
 				disabled={props.disabled}
-				style={{ width: props.fontRatio * 6 }}
+				sx={{ width: props.fontRatio * 6 }}
 				variant="standard"
 				id="outlined-number"
 				label={t('dashboard.timings.sun.trigger.minutes.duration.label')}
@@ -273,7 +263,7 @@ export function DailyTimeTriggerEdit(props: TimingEditProps) {
 		alignItems="center"
 	>
 		<Grid
-			style={{ marginBottom: props.fontRatio }}
+			sx={{ marginBottom: props.fontRatio }}
 			container
 			direction="row"
 			justifyContent="center"
@@ -334,7 +324,7 @@ export function OnceTimingEdit(props: TimingEditProps) {
 	}
 
 	return <Grid
-		style={{ minHeight: props.fontRatio * 6 }}
+		sx={{ minHeight: props.fontRatio * 6 }}
 		container
 		direction="row"
 		justifyContent="center"
@@ -382,7 +372,7 @@ export function TimeoutTimingEdit(props: TimingEditProps) {
 		alignItems="center"
 	>
 		<Grid
-			style={{ marginBottom: props.fontRatio * 0.8 }}
+			sx={{ marginBottom: props.fontRatio * 0.8 }}
 			container
 			direction="column"
 			justifyContent="center"
