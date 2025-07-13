@@ -1,14 +1,17 @@
 import { Fragment, useEffect, useState } from "react";
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { Grid, useTheme } from "@material-ui/core";
+import { Grid, useTheme, Button, ButtonGroup, Box, Paper } from "@material-ui/core";
 import { getModeColor } from "../../logic/common/themeUtils";
 import { useTranslation } from "react-i18next";
 import ModeNightIcon from '@mui/icons-material/ModeNight';
 import WbTwilightIcon from '@mui/icons-material/WbTwilight';
+import { AccessTime, CalendarMonth } from '@mui/icons-material';
 import TextField from "@mui/material/TextField";
 import { daysOptions } from "./TimingOverview";
 import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { enUS, he } from 'date-fns/locale';
@@ -29,12 +32,119 @@ switch (lang.langCode) {
 		break;
 }
 
+type DateTimeMode = 'date' | 'time';
+
 interface TimingEditProps {
 	timingType: TimingTypes;
 	timingProperties: TimingProperties;
 	setTimingProperties: (timingProperties: TimingProperties) => void;
 	fontRatio: number;
 	disabled?: boolean;
+}
+
+// קומפוננטה חדשה לבורר תאריך/שעה עם מתגים
+interface EnhancedDateTimePickerProps {
+	value: Date;
+	onChange: (newValue: Date | null) => void;
+	disabled?: boolean;
+	label?: string;
+	fontRatio?: number;
+}
+
+function EnhancedDateTimePicker({ value, onChange, disabled = false, label, fontRatio = 16 }: EnhancedDateTimePickerProps) {
+	const [mode, setMode] = useState<DateTimeMode>('date');
+	const theme = useTheme();
+
+	return (
+		<Box sx={{ width: '100%', direction: 'rtl' }}>
+			<LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={datePickerLocal}>
+				{/* בורר התאריך/שעה */}
+				<Box sx={{ mb: 2 }}>
+					{mode === 'date' ? (
+						<DatePicker
+							value={value}
+							onChange={onChange}
+							disabled={disabled}
+							renderInput={(params: any) => (
+								<TextField 
+									{...params} 
+									label={label || "בחר תאריך"}
+									fullWidth
+									sx={{ direction: 'rtl' }}
+								/>
+							)}
+						/>
+					) : (
+						<TimePicker
+							value={value}
+							onChange={onChange}
+							disabled={disabled}
+							ampm={false} // פורמט 24 שעות
+							renderInput={(params: any) => (
+								<TextField 
+									{...params} 
+									label={label || "בחר שעה"}
+									fullWidth
+									sx={{ direction: 'rtl' }}
+								/>
+							)}
+						/>
+					)}
+				</Box>
+
+				{/* כפתורי בחירת מצב */}
+				<Grid container spacing={0}>
+					<Grid item xs={6}>
+						<Button
+							fullWidth
+							variant={mode === 'time' ? 'contained' : 'outlined'}
+							onClick={() => setMode('time')}
+							disabled={disabled}
+							startIcon={<AccessTime />}
+							sx={{
+								py: 1.5,
+								fontSize: fontRatio * 0.75,
+								fontWeight: mode === 'time' ? 'bold' : 'normal',
+								direction: 'rtl',
+								borderTopRightRadius: 0,
+								borderBottomRightRadius: 0,
+								'& .MuiButton-startIcon': {
+									marginRight: '8px',
+									marginLeft: 0
+								}
+							}}
+						>
+							שעה
+						</Button>
+					</Grid>
+					<Grid item xs={6}>
+						<Button
+							fullWidth
+							variant={mode === 'date' ? 'contained' : 'outlined'}
+							onClick={() => setMode('date')}
+							disabled={disabled}
+							startIcon={<CalendarMonth />}
+							sx={{
+								py: 1.5,
+								fontSize: fontRatio * 0.75,
+								fontWeight: mode === 'date' ? 'bold' : 'normal',
+								direction: 'rtl',
+								borderTopLeftRadius: 0,
+								borderBottomLeftRadius: 0,
+								borderLeft: 'none',
+								'& .MuiButton-startIcon': {
+									marginRight: '8px',
+									marginLeft: 0
+								}
+							}}
+						>
+							תאריך
+						</Button>
+					</Grid>
+				</Grid>
+			</LocalizationProvider>
+		</Box>
+	);
 }
 
 export function DailySunTriggerEdit(props: TimingEditProps) {
@@ -230,21 +340,19 @@ export function OnceTimingEdit(props: TimingEditProps) {
 		justifyContent="center"
 		alignItems="center"
 	>
-		{/* Use french time, since they use 24 hours clock */}
-		<LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={datePickerLocal}>
-			<DesktopDateTimePicker
-				disabled={props.disabled}
-				value={time}
-				onChange={(newValue: Date | null) => {
-					if (!newValue) {
-						return;
-					}
-					setTime(newValue);
-					sendTimingProperties(newValue);
-				}}
-				renderInput={(params: any) => <TextField {...params} />}
-			/>
-		</LocalizationProvider>
+		{/* החלפה לקומפוננטה החדשה עם מתגים */}
+		<EnhancedDateTimePicker
+			disabled={props.disabled}
+			value={time}
+			onChange={(newValue: Date | null) => {
+				if (!newValue) {
+					return;
+				}
+				setTime(newValue);
+				sendTimingProperties(newValue);
+			}}
+			fontRatio={props.fontRatio}
+		/>
 	</Grid>
 }
 
@@ -280,20 +388,20 @@ export function TimeoutTimingEdit(props: TimingEditProps) {
 			justifyContent="center"
 			alignItems="center"
 		>
-			<LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={datePickerLocal}>
-				<DesktopDateTimePicker
-					disabled={props.disabled}
-					value={value}
-					onChange={(newValue: Date | null) => {
-						if (!newValue) {
-							return;
-						}
-						setValue(newValue);
-						sendTimingProperties(newValue, durationInMinutes);
-					}}
-					renderInput={(params: any) => <TextField {...params} label={t('dashboard.timings.timeout.start.in.label')} />}
-				/>
-			</LocalizationProvider>
+			{/* החלפה לקומפוננטה החדשה עם מתגים */}
+			<EnhancedDateTimePicker
+				disabled={props.disabled}
+				value={value}
+				onChange={(newValue: Date | null) => {
+					if (!newValue) {
+						return;
+					}
+					setValue(newValue);
+					sendTimingProperties(newValue, durationInMinutes);
+				}}
+				label={t('dashboard.timings.timeout.start.in.label')}
+				fontRatio={props.fontRatio}
+			/>
 		</Grid>
 		<TextField
 			disabled={props.disabled}
