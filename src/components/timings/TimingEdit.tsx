@@ -139,7 +139,7 @@ function EnhancedDateTimePicker({ value, onChange, disabled = false, label, font
 
 export function DailySunTriggerEdit(props: TimingEditProps) {
 	const { t } = useTranslation();
-	const theme = useTheme();
+	const theme = useTheme() as any; // Fix theme type conflict
 	const [sunTrigger, setSunTrigger] = useState<SunTriggerOptions>(props.timingProperties?.dailySunTrigger?.sunTrigger || SunTriggerOptions.Sunrise);
 	const [days, setDays] = useState<DaysOptions[]>(props.timingProperties?.dailySunTrigger?.days || []);
 	const [durationMinutes, setDurationMinutes] = useState<number>(props.timingProperties?.dailySunTrigger?.durationMinutes || 0);
@@ -242,7 +242,7 @@ export function DailySunTriggerEdit(props: TimingEditProps) {
 
 export function DailyTimeTriggerEdit(props: TimingEditProps) {
 	const { t } = useTranslation();
-	const theme = useTheme();
+	const theme = useTheme() as any; // Fix theme type conflict
 	const [days, setDays] = useState<DaysOptions[]>(props.timingProperties?.dailyTimeTrigger?.days || []);
 	const [time, setTime] = useState<Date>(new Date(0, 0, 0, props.timingProperties?.dailyTimeTrigger?.hour || 0, props.timingProperties?.dailyTimeTrigger?.minutes || 0, 0, 0));
 
